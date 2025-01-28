@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            min-height: 100vh;
+        }
+
+        /* Entry page styles */
+        .entry {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            position: relative;
+        }
+
+        .entry-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .title {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            z-index: 2;
+        }
+
+        .start-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 30px;
+            font-size: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 2;
+        }
+
+        .start-button:hover {
+            transform: scale(1.05);
+            background-color: #45a049;
+        }
+
+        /* Game page styles */
+        #gamePage {
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+            padding: 10px;
+        }
+
+        .lives-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .life-heart {
+            color: red;
+            font-size: 24px;
+        }
+
+        .side-section {
+            width: 300px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        #gameCanvas {
+            border: 2px solid #333;
+            border-radius: 4px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+        }
+
+        .score {
+            font-size: 24px;
+            margin: 20px 0;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .game-controls {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .game-controls button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+
+        .game-controls button:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+        }
+
+        #message {
+            font-size: 24px;
+            margin: 20px 0;
+            color: #333;
+            text-align: center;
+            min-height: 36px;
+        }
+
+        /* Leaderboard styles */
+        .leaderboard {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .leaderboard h2 {
+            color: #333;
+            font-size: 20px;
+            margin: 0 0 15px 0;
+            text-align: center;
+        }
+
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+
+        .leaderboard-table th,
+        .leaderboard-table td {
+            padding: 8px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .leaderboard-table th {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+
+        .leaderboard-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .leaderboard-table tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        #loveImage {
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Mobile touch controls */
+        .touch-controls {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            gap: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .touch-controls {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: repeat(3, 1fr);
+                width: 180px;
+                height: 180px;
+            }
+
+            #gamePage {
+                padding: 10px;
+                flex-direction: column;
+            }
+
+            .side-section {
+                width: 100%;
+            }
+
+            #gameCanvas {
+                width: 100%;
+                height: auto;
+            }
+        }
+
+        .direction-btn {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid #4CAF50;
+            border-radius: 50%;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+        }
+    </style>
+</head>
+<body>
+    <!-- Entry Page -->
+    <div id="entryPage" class="entry">
+        <img src="images/FrontPage.PNG" alt="Marcy with Rabbit" class="entry-background">
+        <h1 class="title">Marcy's Snake Game</h1>
+        <button id="startGameBtn" class="start-button">Start</button>
+    </div>
+
+    <!-- Game Page -->
+    <div id="gamePage" class="hidden">
+        <div class="game-section">
+            <div class="game-header">
+                <div id="scoreDisplay" class="score">Score: 0</div>
+                <div class="lives-container">
+                    <span class="life-heart">❤️</span>
+                    <span class="life-heart">❤️</span>
+                    <span class="life-heart">❤️</span>
+                </div>
+            </div>
+            <canvas id="gameCanvas" width="600" height="600"></canvas>
+            <div class="game-controls">
+                <button id="restartBtn">Restart</button>
+                <button id="pauseBtn">Pause</button>
+            </div>
+            <div id="message"></div>
+        </div>
+        
+        <div class="side-section">
+            <!-- Leaderboard above the image -->
+            <div id="leaderboard" class="leaderboard">
+                <h2>Top Scores</h2>
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Score</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Scores will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Love image below leaderboard -->
+            <img id="loveImage" class="hidden" src="" alt="Love Image">
+        </div>
+
+        <!-- Mobile Touch Controls -->
+        <div class="touch-controls">
+            <div></div>
+            <button class="direction-btn" data-direction="UP">↑</button>
+            <div></div>
+            <button class="direction-btn" data-direction="LEFT">←</button>
+            <div></div>
+            <button class="direction-btn" data-direction="RIGHT">→</button>
+            <div></div>
+            <button class="direction-btn" data-direction="DOWN">↓</button>
+            <div></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
