@@ -1,3 +1,4 @@
+/* Base styles */
 body {
     margin: 0;
     padding: 0;
@@ -69,8 +70,70 @@ body {
     min-height: 100vh;
     background-color: white;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
 
+/* Message styles */
+.message-container {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20px;
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+    font-family: "Microsoft YaHei", "SimHei", Arial;
+    z-index: 100;
+}
+
+/* Game Over Modal styles */
+.game-over-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    text-align: center;
+    z-index: 1000;
+    min-width: 300px;
+}
+
+.game-over-text {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 15px;
+    font-family: "Microsoft YaHei", "SimHei", Arial;
+}
+
+.game-over-score {
+    font-size: 20px;
+    color: #666;
+    margin-bottom: 20px;
+    font-family: "Microsoft YaHei", "SimHei", Arial;
+}
+
+.game-over-button {
+    padding: 10px 25px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 5px 10px;
+    transition: all 0.2s;
+}
+
+.game-over-button:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+/* Game section styles */
 .game-section {
     flex: 1;
     display: flex;
@@ -177,7 +240,6 @@ body {
     transition: background-color 0.2s, transform 0.2s;
     user-select: none;
     -webkit-user-select: none;
-    -webkit-tap-highlight-color: transparent;
 }
 
 .arrow-btn:hover {
@@ -187,15 +249,6 @@ body {
 
 .arrow-btn:active {
     transform: scale(0.95);
-    background-color: #3d8b40;
-}
-
-#message {
-    font-size: 24px;
-    margin: 20px 0;
-    color: #333;
-    text-align: center;
-    min-height: 36px;
 }
 
 /* Leaderboard styles */
@@ -216,7 +269,6 @@ body {
 .leaderboard-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 10px;
 }
 
 .leaderboard-table th,
@@ -230,10 +282,6 @@ body {
     background-color: #4CAF50;
     color: white;
     font-weight: bold;
-}
-
-.leaderboard-table tr:last-child td {
-    border-bottom: none;
 }
 
 .leaderboard-table tr:hover {
@@ -260,111 +308,21 @@ body {
     .side-section {
         width: auto;
         margin: 10px;
-        order: -1; /* This moves the side section to the top */
-        padding: 10px;
     }
 
-    #gameCanvas {
-        width: 100%;
-        max-width: 400px;
-        height: auto;
-        margin: 10px 0;
+    .message-container {
+        width: 90%;
+        font-size: 18px;
     }
 
-    .game-section {
-        padding: 0;
-    }
-
-    .game-header {
-        width: 100%;
-        padding: 5px;
-    }
-
-    .arrow-controls {
-        margin: 10px 0;
+    .game-over-modal {
+        width: 90%;
+        max-width: 350px;
+        padding: 20px;
     }
 
     .arrow-btn {
         width: 60px;
         height: 60px;
-        font-size: 28px;
-    }
-
-    .game-controls {
-        width: 100%;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin: 10px 0;
-    }
-
-    .game-controls button {
-        flex: 1;
-        min-width: 90px;
-        padding: 12px 15px;
-        font-size: 16px;
-    }
-
-    #loveImage {
-        max-width: 300px;
-        margin: 10px auto;
-    }
-
-    .leaderboard {
-        margin-bottom: 10px;
-    }
-
-    .score {
-        font-size: 20px;
-        margin: 10px 0;
-    }
-
-    .life-heart {
-        font-size: 20px;
-    }
-
-    .title {
-        font-size: 24px;
-        left: 10px;
-    }
-
-    .start-button {
-        padding: 8px 20px;
-        font-size: 18px;
-        right: 10px;
-    }
-}
-
-/* Additional style for smaller screens */
-@media (max-width: 480px) {
-    .game-header {
-        flex-direction: row;
-        justify-content: space-between;
-        margin-bottom: 5px;
-    }
-
-    .arrow-btn {
-        width: 55px;
-        height: 55px;
-        font-size: 24px;
-    }
-
-    .arrow-controls {
-        margin: 5px 0;
-    }
-
-    #message {
-        font-size: 18px;
-        margin: 10px 0;
-        min-height: 27px;
-    }
-
-    .leaderboard h2 {
-        font-size: 18px;
-    }
-
-    .leaderboard-table th,
-    .leaderboard-table td {
-        padding: 6px;
-        font-size: 14px;
     }
 }

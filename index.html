@@ -195,11 +195,62 @@
         }
 
         #message {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
             font-size: 24px;
             margin: 20px 0;
             color: #333;
             text-align: center;
             min-height: 36px;
+            font-family: "Microsoft YaHei", "SimHei", Arial;
+            z-index: 100;
+        }
+
+        /* Game Over Modal styles */
+        .game-over-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            text-align: center;
+            z-index: 1000;
+            min-width: 300px;
+            font-family: "Microsoft YaHei", "SimHei", Arial;
+        }
+
+        .game-over-text {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .game-over-score {
+            font-size: 20px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .game-over-button {
+            padding: 10px 25px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px 10px;
+            transition: all 0.2s;
+        }
+
+        .game-over-button:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
         }
 
         /* Leaderboard styles */
@@ -319,6 +370,12 @@
             .start-button {
                 padding: 8px 20px;
                 font-size: 18px;
+            }
+
+            .game-over-modal {
+                width: 90%;
+                max-width: 350px;
+                padding: 20px;
             }
         }
     </style>
