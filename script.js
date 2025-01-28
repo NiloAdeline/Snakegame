@@ -1,6 +1,8 @@
+// Initialize canvas and context
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
+// Game variables
 const box = 20;
 let snake = [{ x: 9 * box, y: 9 * box }];
 let direction = 'RIGHT';
@@ -43,50 +45,7 @@ function setupPortals() {
     ];
 }
 
-// Leaderboard functions
-function saveScore(newScore) {
-    const date = new Date().toLocaleDateString();
-    const scores = getScores();
-    scores.push({ score: newScore, date: date });
-    scores.sort((a, b) => b.score - a.score);
-    localStorage.setItem('snakeGameScores', JSON.stringify(scores));
-    updateLeaderboard();
-}
-
-function getScores() {
-    const scores = localStorage.getItem('snakeGameScores');
-    return scores ? JSON.parse(scores) : [];
-}
-
-function updateLeaderboard() {
-    const leaderboardBody = document.querySelector('.leaderboard-table tbody');
-    const scores = getScores();
-    const top5Scores = scores.slice(0, 5);
-    
-    let html = '';
-    top5Scores.forEach((record, index) => {
-        html += `
-            <tr>
-                <td>${index + 1}</td>
-                <td>${record.score}</td>
-                <td>${record.date}</td>
-            </tr>
-        `;
-    });
-    
-    for (let i = top5Scores.length; i < 5; i++) {
-        html += `
-            <tr>
-                <td>${i + 1}</td>
-                <td>-</td>
-                <td>-</td>
-            </tr>
-        `;
-    }
-    
-    leaderboardBody.innerHTML = html;
-}
-
+// Message and letter functions
 function decryptMessage(encrypted) {
     try {
         return atob(encrypted);
@@ -102,6 +61,7 @@ function getSegmentLetter(position, score) {
             case 1: return 'i';
             case 2: return 'l';
             case 3: return 'o';
+            default: return '';
         }
     }
     if (score >= 10) {
@@ -115,11 +75,13 @@ function getSegmentLetter(position, score) {
             case 6: return 'o';
             case 7: return 'v';
             case 8: return 'e';
+            default: return '';
         }
     }
     return '';
 }
 
+// Game mechanics functions
 function handleCollision() {
     if (isImmune) return false;
     
@@ -157,6 +119,7 @@ function checkPortals(head) {
     return head;
 }
 
+// Main game draw function
 function draw() {
     if (isPaused) return;
 
@@ -239,16 +202,18 @@ function draw() {
     }
 
     const newHead = { x: snakeX, y: snakeY };
-    snake.unshift(newHead);
-
+    
     // Check collisions
     if (snakeX < 0 || snakeY < 0 || snakeX >= canvas.width || snakeY >= canvas.height || collision(newHead, snake)) {
         if (handleCollision()) {
             clearInterval(game);
             saveScore(score);
             alert('Game Over! Score: ' + score);
+            return;
         }
     }
+
+    snake.unshift(newHead);
 }
 
 function collision(head, array) {
@@ -260,73 +225,51 @@ function collision(head, array) {
     return false;
 }
 
-// Event listeners for keyboard controls
-document.addEventListener('keydown', (event) => {
-    if (event.key === 'ArrowLeft' && direction !== 'RIGHT') direction = 'LEFT';
-    if (event.key === 'ArrowUp' && direction !== 'DOWN') direction = 'UP';
-    if (event.key === 'ArrowRight' && direction !== 'LEFT') direction = 'RIGHT';
-    if (event.key === 'ArrowDown' && direction !== 'UP') direction = 'DOWN';
+// Leaderboard functions
+function saveScore(newScore) {
+    const date = new Date().toLocaleDateString();
+    const scores = getScores();
+    scores.push({ score: newScore, date: date });
+    scores.sort((a, b) => b.score - a.score);
+    localStorage.setItem('snakeGameScores', JSON.stringify(scores));
+    updateLeaderboard();
+}
 
-    if (!speedBoostActive && !isPaused) {
-        speedBoostActive = true;
-        currentSpeed = baseSpeed * speedBoostFactor;
-        clearInterval(game);
-        game = setInterval(draw, currentSpeed);
-    }
-});
+function getScores() {
+    const scores = localStorage.getItem('snakeGameScores');
+    return scores ? JSON.parse(scores) : [];
+}
 
-document.addEventListener('keyup', (event) => {
-    if (event.key.startsWith('Arrow')) {
-        speedBoostActive = false;
-        currentSpeed = baseSpeed;
-        if (!isPaused) {
-            clearInterval(game);
-            game = setInterval(draw, currentSpeed);
-        }
-    }
-});
-
-// Touch controls for mobile
-document.querySelectorAll('.direction-btn').forEach(button => {
-    button.addEventListener('touchstart', (e) => {
-        e.preventDefault(); // Prevent default touch behavior
-        const newDirection = button.dataset.direction;
-        
-        // Only change direction if it's not the opposite of current direction
-        if (
-            (newDirection === 'LEFT' && direction !== 'RIGHT') ||
-            (newDirection === 'RIGHT' && direction !== 'LEFT') ||
-            (newDirection === 'UP' && direction !== 'DOWN') ||
-            (newDirection === 'DOWN' && direction !== 'UP')
-        ) {
-            direction = newDirection;
-            
-            // Activate speed boost on touch
-            if (!speedBoostActive && !isPaused) {
-                speedBoostActive = true;
-                currentSpeed = baseSpeed * speedBoostFactor;
-                clearInterval(game);
-                game = setInterval(draw, currentSpeed);
-            }
-        }
+function updateLeaderboard() {
+    const leaderboardBody = document.querySelector('.leaderboard-table tbody');
+    const scores = getScores();
+    const top5Scores = scores.slice(0, 5);
+    
+    let html = '';
+    top5Scores.forEach((record, index) => {
+        html += `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${record.score}</td>
+                <td>${record.date}</td>
+            </tr>
+        `;
     });
+    
+    for (let i = top5Scores.length; i < 5; i++) {
+        html += `
+            <tr>
+                <td>${i + 1}</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+        `;
+    }
+    
+    leaderboardBody.innerHTML = html;
+}
 
-    button.addEventListener('touchend', () => {
-        // Deactivate speed boost when touch ends
-        speedBoostActive = false;
-        currentSpeed = baseSpeed;
-        if (!isPaused) {
-            clearInterval(game);
-            game = setInterval(draw, currentSpeed);
-        }
-    });
-});
-
-// Prevent scrolling when touching the buttons
-document.querySelector('.touch-controls').addEventListener('touchmove', (e) => {
-    e.preventDefault();
-}, { passive: false });
-
+// Game control functions
 function startGame() {
     document.getElementById('entryPage').classList.add('hidden');
     document.getElementById('gamePage').classList.remove('hidden');
@@ -335,9 +278,25 @@ function startGame() {
     restartGame();
 }
 
+function goHome() {
+    clearInterval(game);
+    document.getElementById('gamePage').classList.add('hidden');
+    document.getElementById('entryPage').classList.remove('hidden');
+    snake = [{ x: 9 * box, y: 9 * box }];
+    direction = 'RIGHT';
+    score = 0;
+    lives = 3;
+    isPaused = false;
+    document.getElementById('pauseBtn').textContent = 'Pause';
+    document.getElementById('message').innerText = "";
+    document.getElementById('scoreDisplay').innerText = "Score: 0";
+    document.getElementById('loveImage').classList.add('hidden');
+    updateLivesDisplay();
+}
+
 function togglePause() {
     isPaused = !isPaused;
-    document.getElementById('pauseBtn').innerText = isPaused ? 'Resume' : 'Pause';
+    document.getElementById('pauseBtn').textContent = isPaused ? 'Resume' : 'Pause';
     if (isPaused) {
         clearInterval(game);
     } else {
@@ -356,7 +315,7 @@ function restartGame() {
     currentSpeed = baseSpeed;
     speedBoostActive = false;
     isPaused = false;
-    document.getElementById('pauseBtn').innerText = 'Pause';
+    document.getElementById('pauseBtn').textContent = 'Pause';
     setupPortals();
     clearInterval(game);
     game = setInterval(draw, currentSpeed);
@@ -366,11 +325,85 @@ function restartGame() {
     updateLivesDisplay();
 }
 
-// Setup button listeners
-document.getElementById('startGameBtn').addEventListener('click', startGame);
-document.getElementById('restartBtn').addEventListener('click', restartGame);
-document.getElementById('pauseBtn').addEventListener('click', togglePause);
+// Event listeners for keyboard controls
+document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowLeft' && direction !== 'RIGHT') direction = 'LEFT';
+        if (event.key === 'ArrowUp' && direction !== 'DOWN') direction = 'UP';
+        if (event.key === 'ArrowRight' && direction !== 'LEFT') direction = 'RIGHT';
+        if (event.key === 'ArrowDown' && direction !== 'UP') direction = 'DOWN';
 
-// Initialize the game
-setupPortals();
-updateLeaderboard();
+        if (!speedBoostActive && !isPaused) {
+            speedBoostActive = true;
+            currentSpeed = baseSpeed * speedBoostFactor;
+            clearInterval(game);
+            game = setInterval(draw, currentSpeed);
+        }
+    });
+
+    document.addEventListener('keyup', (event) => {
+        if (event.key.startsWith('Arrow')) {
+            speedBoostActive = false;
+            currentSpeed = baseSpeed;
+            if (!isPaused) {
+                clearInterval(game);
+                game = setInterval(draw, currentSpeed);
+            }
+        }
+    });
+
+    // Arrow button controls
+    document.querySelectorAll('.arrow-btn').forEach(button => {
+        button.addEventListener('mousedown', (e) => {
+            const newDirection = button.dataset.direction;
+            direction = newDirection;
+            if (!speedBoostActive && !isPaused) {
+                speedBoostActive = true;
+                currentSpeed = baseSpeed * speedBoostFactor;
+                clearInterval(game);
+                game = setInterval(draw, currentSpeed);
+            }
+        });
+
+        button.addEventListener('mouseup', () => {
+            speedBoostActive = false;
+            currentSpeed = baseSpeed;
+            if (!isPaused) {
+                clearInterval(game);
+                game = setInterval(draw, currentSpeed);
+            }
+        });
+
+        button.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const newDirection = button.dataset.direction;
+            direction = newDirection;
+            if (!speedBoostActive && !isPaused) {
+                speedBoostActive = true;
+                currentSpeed = baseSpeed * speedBoostFactor;
+                clearInterval(game);
+                game = setInterval(draw, currentSpeed);
+            }
+        });
+
+        button.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            speedBoostActive = false;
+            currentSpeed = baseSpeed;
+            if (!isPaused) {
+                clearInterval(game);
+                game = setInterval(draw, currentSpeed);
+            }
+        });
+    });
+
+    // Setup game control buttons
+    document.getElementById('startGameBtn').addEventListener('click', startGame);
+    document.getElementById('homeBtn').addEventListener('click', goHome);
+    document.getElementById('restartBtn').addEventListener('click', restartGame);
+    document.getElementById('pauseBtn').addEventListener('click', togglePause);
+
+    // Initialize game
+    setupPortals();
+    updateLeaderboard();
+});

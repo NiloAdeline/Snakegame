@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Marcy's Snake Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             margin: 0;
@@ -127,10 +129,12 @@
             font-weight: bold;
         }
 
+        /* Game Controls */
         .game-controls {
             margin: 20px 0;
             display: flex;
             gap: 10px;
+            justify-content: center;
         }
 
         .game-controls button {
@@ -147,6 +151,47 @@
         .game-controls button:hover {
             background-color: #45a049;
             transform: translateY(-2px);
+        }
+
+        /* Arrow Controls */
+        .arrow-controls {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .arrow-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .arrow-btn {
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s, transform 0.2s;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .arrow-btn:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        .arrow-btn:active {
+            transform: scale(0.95);
         }
 
         #message {
@@ -209,50 +254,72 @@
             display: none !important;
         }
 
-        /* Mobile touch controls */
-        .touch-controls {
-            display: none;
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            gap: 10px;
-        }
-
+        /* Mobile Responsive Styles */
         @media (max-width: 768px) {
-            .touch-controls {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                grid-template-rows: repeat(3, 1fr);
-                width: 180px;
-                height: 180px;
-            }
-
             #gamePage {
                 padding: 10px;
                 flex-direction: column;
             }
 
             .side-section {
-                width: 100%;
+                width: auto;
+                margin: 10px;
             }
 
             #gameCanvas {
                 width: 100%;
+                max-width: 400px;
                 height: auto;
             }
-        }
+            
+            .arrow-btn {
+                width: 70px;
+                height: 70px;
+                font-size: 32px;
+            }
 
-        .direction-btn {
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.8);
-            border: 2px solid #4CAF50;
-            border-radius: 50%;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            touch-action: manipulation;
+            .game-controls {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .game-controls button {
+                flex: 1;
+                min-width: 90px;
+                padding: 12px 15px;
+                font-size: 16px;
+            }
+
+            .arrow-controls {
+                margin: 15px 0;
+            }
+
+            .arrow-row {
+                gap: 15px;
+            }
+
+            .game-header {
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 10px 5px;
+            }
+
+            .score {
+                font-size: 20px;
+            }
+
+            .life-heart {
+                font-size: 20px;
+            }
+
+            .title {
+                font-size: 24px;
+            }
+
+            .start-button {
+                padding: 8px 20px;
+                font-size: 18px;
+            }
         }
     </style>
 </head>
@@ -276,15 +343,30 @@
                 </div>
             </div>
             <canvas id="gameCanvas" width="600" height="600"></canvas>
+            
+            <!-- Game Controls -->
             <div class="game-controls">
+                <button id="homeBtn">Home</button>
                 <button id="restartBtn">Restart</button>
                 <button id="pauseBtn">Pause</button>
             </div>
+
+            <!-- Arrow Controls -->
+            <div class="arrow-controls">
+                <div class="arrow-row">
+                    <button class="arrow-btn" data-direction="UP">↑</button>
+                </div>
+                <div class="arrow-row">
+                    <button class="arrow-btn" data-direction="LEFT">←</button>
+                    <button class="arrow-btn" data-direction="DOWN">↓</button>
+                    <button class="arrow-btn" data-direction="RIGHT">→</button>
+                </div>
+            </div>
+            
             <div id="message"></div>
         </div>
         
         <div class="side-section">
-            <!-- Leaderboard above the image -->
             <div id="leaderboard" class="leaderboard">
                 <h2>Top Scores</h2>
                 <table class="leaderboard-table">
@@ -301,21 +383,7 @@
                 </table>
             </div>
             
-            <!-- Love image below leaderboard -->
             <img id="loveImage" class="hidden" src="" alt="Love Image">
-        </div>
-
-        <!-- Mobile Touch Controls -->
-        <div class="touch-controls">
-            <div></div>
-            <button class="direction-btn" data-direction="UP">↑</button>
-            <div></div>
-            <button class="direction-btn" data-direction="LEFT">←</button>
-            <div></div>
-            <button class="direction-btn" data-direction="RIGHT">→</button>
-            <div></div>
-            <button class="direction-btn" data-direction="DOWN">↓</button>
-            <div></div>
         </div>
     </div>
 
