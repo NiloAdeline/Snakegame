@@ -19,34 +19,160 @@ let isImmune = false;
 let immunityDuration = 2000;
 let portals = [];
 
-// Encrypted messages and milestones
-const _0xi5p6 = {
-    4: "TmlsbyBhcHBlYXJzISBZb3UgYXJlIGRvaW5nIGdyZWF0IQ==",  // "Nilo appears! You are doing great!"
-    9: "TmlsbyBsb3ZlcyEgS2VlcCBnb2luZywgbXkgZGVhciE=",      // "Nilo loves! Keep going, my dear!"
-    18: "TmlsbyBsb3ZlcyBBZGVsaW5lISBZb3UgYXJlIGFtYXppbmch", // "Nilo loves Adeline!"
-    23: "5a6D6LSt5YWz77yM5Yqg5rK577yB",                      // "宝贝兔，加油哦"
-    28: "5LuK5aSp5pivMjjlj7fvvIznlJ/ml6Xlv6vkuZDlk77vvIzluIzmnJvkvaDllpzmrKLov5nkuKrlsI/spbw=", // "今天是28号，生日快乐哦，希望你喜欢这个小蛇"
-    39: "QnJvd25pZSBsb3ZlcyBDb255"                          // "Brownie loves Cony"
+// Extended image mappings with ranges
+const _0xj6q7 = {
+    // 5-9: love1.jpg
+    5: "images/love1.jpg",
+    6: "images/love1.jpg",
+    7: "images/love1.jpg",
+    8: "images/love1.jpg",
+    9: "images/love1.jpg",
+    // 10-14: love2.jpg
+    10: "images/love2.jpg",
+    11: "images/love2.jpg",
+    12: "images/love2.jpg",
+    13: "images/love2.jpg",
+    14: "images/love2.jpg",
+    // 15-19: love3.jpg
+    15: "images/love3.jpg",
+    16: "images/love3.jpg",
+    17: "images/love3.jpg",
+    18: "images/love3.jpg",
+    19: "images/love3.jpg",
+    // 20-24: love4.jpg
+    20: "images/love4.jpg",
+    21: "images/love4.jpg",
+    22: "images/love4.jpg",
+    23: "images/love4.jpg",
+    24: "images/love4.jpg",
+    // 25-27: love5.jpg
+    25: "images/love5.jpg",
+    26: "images/love5.jpg",
+    27: "images/love5.jpg",
+    // 28-34: love6.jpg
+    28: "images/love6.jpg",
+    29: "images/love6.jpg",
+    30: "images/love6.jpg",
+    31: "images/love6.jpg",
+    32: "images/love6.jpg",
+    33: "images/love6.jpg",
+    34: "images/love6.jpg",
+    // 35-39: love7.jpg
+    35: "images/love7.jpg",
+    36: "images/love7.jpg",
+    37: "images/love7.jpg",
+    38: "images/love7.jpg",
+    39: "images/love7.jpg",
+    // 40-44: love8.jpg
+    40: "images/love8.jpg",
+    41: "images/love8.jpg",
+    42: "images/love8.jpg",
+    43: "images/love8.jpg",
+    44: "images/love8.jpg",
+    // Continue pattern for remaining ranges...
+    // 45-49: love9.jpg
+    45: "images/love9.jpg",
+    46: "images/love9.jpg",
+    47: "images/love9.jpg",
+    48: "images/love9.jpg",
+    49: "images/love9.jpg",
+    // 50-54: love10.jpg
+    50: "images/love10.jpg",
+    51: "images/love10.jpg",
+    52: "images/love10.jpg",
+    53: "images/love10.jpg",
+    54: "images/love10.jpg",
+	55: "images/love11.jpg",
+    56: "images/love11.jpg",
+    57: "images/love11.jpg",
+    58: "images/love11.jpg",
+    59: "images/love11.jpg",
+	60: "images/love12.jpg",
+	61: "images/love12.jpg",
+	62: "images/love12.jpg",
+	63: "images/love12.jpg",
+    64: "images/love12.jpg",
+	65: "images/love13.jpg",
+	66: "images/love13.jpg",
+    67: "images/love13.jpg",
+	68: "images/love13.jpg",
+	69: "images/love13.jpg",
+	70: "images/love14.jpg",
+	71: "images/love14.jpg",
+	72: "images/love14.jpg",
+	73: "images/love14.jpg",
+	74: "images/love14.jpg",
+	75: "images/love15.jpg",
+	76: "images/love15.jpg",
+	77: "images/love15.jpg",
+	78: "images/love15.jpg",
+	79: "images/love15.jpg",
+	80: "images/love16.jpg",
+	81: "images/love16.jpg",
+	82: "images/love16.jpg",
+	83: "images/love16.jpg",
+	84: "images/love16.jpg",
+	85: "images/love17.jpg",
+	86: "images/love17.jpg",
+	87: "images/love17.jpg",
+	88: "images/love17.jpg",
+	89: "images/love17.jpg",
+	90: "images/love18.jpg",
+	91: "images/love18.jpg",
+	92: "images/love18.jpg",
+	93: "images/love18.jpg",
+	94: "images/love18.jpg",
+	95: "images/love19.jpg",
+	96: "images/love19.jpg",
+	97: "images/love19.jpg",
+	98: "images/love19.jpg",
+	99: "images/love19.jpg",
+    // Final milestone
+    100: "images/love20.jpg"
 };
 
-// Extended image mappings
-const _0xj6q7 = {
-    5: "images/love1.jpg",
-    6: "images/love2.jpg",
-    7: "images/love3.jpg",
-    8: "images/love4.jpg",
-    9: "images/love5.jpg",
-    10: "images/love6.jpg",
-    11: "images/love7.jpg",
-    12: "images/love8.jpg",
-    13: "images/love9.jpg",
-    14: "images/love10.jpg",
-    15: "images/love11.jpg",
-    16: "images/love12.jpg",
-    17: "images/love13.jpg",
-    18: "images/love14.jpg",
-    19: "images/love15.jpg",
-    20: "images/love16.jpg"
+// Updated messages with ranges
+const _0xi5p6 = {
+    // 4-9
+    4: btoa("You are doing great!"),
+    // 10-14
+    10: btoa("Keep going, my dear"),
+    // 15-19
+    15: btoa("Not bad, mummy !!!!"),
+    // 20-24
+    20: btoa("I am watching you ohhhhhh"),
+    // 25-27
+    25: btoa("You pro at Brawl star, this is sup sup water for you!"),
+    // 28-34
+    28: btoa("Happy Birthday, Mummy"),
+    // 35-39
+    35: btoa("I'm doing inspection while watching you playing"),
+    // 40-44
+    40: btoa("Gambateh, let me \"hey\" for a while"),
+    // 45-49
+    45: btoa("Wow, mummy is here !!!!!"),
+    // 50-54
+    50: btoa("Can't wait to see you in next photo"),
+    // 55-59
+    55: btoa("Hello, mummy is very strong, you can play until this steps !"),
+    // 60-64
+    60: btoa("Let me prepare some bread for Daddy"),
+    // 65-69
+    65: btoa("Previously i played until this height / score"),
+    // 70-74
+    70: btoa("But, i believe mummy can do it (Snoring)"),
+    // 75-79
+    75: btoa("Good scores !!!"),
+    // 80-84
+    80: btoa("No worries, I'm still here !!"),
+    // 85-89
+    85: btoa("Let's get ready to witness the winner"),
+    // 90-94
+    90: btoa("Yes, i'm ready !!!"),
+    // 95-99
+    95: btoa("As far as you come, do you still remember me ?"),
+    // 100
+    100: btoa("Hello, you win the games ! We all know that you can do it.")
 };
 
 function decryptMessage(encrypted) {
@@ -58,25 +184,22 @@ function decryptMessage(encrypted) {
 }
 
 function getSegmentLetter(position, score) {
-    // 4-8: "nilo"
+    // Original message patterns remain unchanged
     if (score >= 4 && score < 9) {
         const pattern = 'nilo';
         return position < pattern.length ? pattern[position] : '';
     }
     
-    // 9-17: "nilo loves"
     if (score >= 9 && score < 18) {
         const pattern = 'nilo loves';
         return position < pattern.length ? pattern[position] : '';
     }
     
-    // 18-22: "nilo loves adeline"
     if (score >= 18 && score < 23) {
         const pattern = 'nilo loves adeline';
         return position < pattern.length ? pattern[position] : '';
     }
     
-    // 23-27: "宝贝兔，加油哦" - Centered
     if (score >= 23 && score < 28) {
         const pattern = ['宝', '贝', '兔', '，', '加', '油', '哦'];
         const totalLength = pattern.length;
@@ -87,13 +210,11 @@ function getSegmentLetter(position, score) {
         return '';
     }
     
-    // 28-38: "今天是28号，生日快乐哦，希望你喜欢这个小蛇"
     if (score >= 28 && score < 39) {
         const pattern = ['今', '天', '是', '2', '8', '号', '，', '生', '日', '快', '乐', '哦', '，', '希', '望', '你', '喜', '欢', '这', '个', '小', '蛇', '❤️', '❤️', '❤️'];
         return position < pattern.length ? pattern[position] : '';
     }
     
-    // 39+: "Brownie loves Cony"
     if (score >= 39) {
         const pattern = 'Brownie loves Cony';
         return position < pattern.length ? pattern[position] : '';
@@ -152,12 +273,24 @@ function checkPortals(head) {
 function showGameOverModal(score) {
     const modal = document.createElement('div');
     modal.className = 'game-over-modal';
-    modal.innerHTML = `
-        <div class="game-over-text">宝贝，没关系，加油再试！</div>
-        <div class="game-over-score">得分: ${score}</div>
-        <button class="game-over-button" onclick="restartGame()">再试一次</button>
-        <button class="game-over-button" onclick="goHome()">回主页</button>
-    `;
+    
+    // Special message for score 100
+    if (score >= 100) {
+        modal.innerHTML = `
+            <div class="game-over-text">Winner !!!! 宝贝，你有一份神秘的礼物！</div>
+            <div class="game-over-score">得分: ${score}</div>
+            <button class="game-over-button" onclick="restartGame()">再试一次</button>
+            <button class="game-over-button" onclick="goHome()">回主页</button>
+        `;
+    } else {
+        modal.innerHTML = `
+            <div class="game-over-text">宝贝，没关系，加油再试！</div>
+            <div class="game-over-score">得分: ${score}</div>
+            <button class="game-over-button" onclick="restartGame()">再试一次</button>
+            <button class="game-over-button" onclick="goHome()">回主页</button>
+        `;
+    }
+    
     document.body.appendChild(modal);
 }
 
