@@ -260,7 +260,7 @@ function collision(head, array) {
     return false;
 }
 
-// Event listeners
+// Event listeners for keyboard controls
 document.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowLeft' && direction !== 'RIGHT') direction = 'LEFT';
     if (event.key === 'ArrowUp' && direction !== 'DOWN') direction = 'UP';
@@ -286,6 +286,47 @@ document.addEventListener('keyup', (event) => {
     }
 });
 
+// Touch controls for mobile
+document.querySelectorAll('.direction-btn').forEach(button => {
+    button.addEventListener('touchstart', (e) => {
+        e.preventDefault(); // Prevent default touch behavior
+        const newDirection = button.dataset.direction;
+        
+        // Only change direction if it's not the opposite of current direction
+        if (
+            (newDirection === 'LEFT' && direction !== 'RIGHT') ||
+            (newDirection === 'RIGHT' && direction !== 'LEFT') ||
+            (newDirection === 'UP' && direction !== 'DOWN') ||
+            (newDirection === 'DOWN' && direction !== 'UP')
+        ) {
+            direction = newDirection;
+            
+            // Activate speed boost on touch
+            if (!speedBoostActive && !isPaused) {
+                speedBoostActive = true;
+                currentSpeed = baseSpeed * speedBoostFactor;
+                clearInterval(game);
+                game = setInterval(draw, currentSpeed);
+            }
+        }
+    });
+
+    button.addEventListener('touchend', () => {
+        // Deactivate speed boost when touch ends
+        speedBoostActive = false;
+        currentSpeed = baseSpeed;
+        if (!isPaused) {
+            clearInterval(game);
+            game = setInterval(draw, currentSpeed);
+        }
+    });
+});
+
+// Prevent scrolling when touching the buttons
+document.querySelector('.touch-controls').addEventListener('touchmove', (e) => {
+    e.preventDefault();
+}, { passive: false });
+
 function startGame() {
     document.getElementById('entryPage').classList.add('hidden');
     document.getElementById('gamePage').classList.remove('hidden');
@@ -296,6 +337,7 @@ function startGame() {
 
 function togglePause() {
     isPaused = !isPaused;
+    document.getElementById('pauseBtn').innerText = isPaused ? 'Resume' : 'Pause';
     if (isPaused) {
         clearInterval(game);
     } else {
@@ -313,6 +355,8 @@ function restartGame() {
     baseSpeed = 200;
     currentSpeed = baseSpeed;
     speedBoostActive = false;
+    isPaused = false;
+    document.getElementById('pauseBtn').innerText = 'Pause';
     setupPortals();
     clearInterval(game);
     game = setInterval(draw, currentSpeed);
