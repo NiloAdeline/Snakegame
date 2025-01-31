@@ -4,7 +4,8 @@ body {
     padding: 0;
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
 }
 
 /* Entry page styles */
@@ -63,77 +64,16 @@ body {
 /* Game page styles */
 #gamePage {
     display: flex;
-    padding: 20px;
-    gap: 20px;
+    padding: 10px;
+    gap: 10px;
     max-width: 1200px;
     margin: 0 auto;
-    min-height: 100vh;
+    height: 100vh;
     background-color: white;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    position: relative;
+    overflow: hidden;
 }
 
-/* Message styles */
-.message-container {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 20px;
-    color: #333;
-    font-weight: bold;
-    text-align: center;
-    font-family: "Microsoft YaHei", "SimHei", Arial;
-    z-index: 100;
-}
-
-/* Game Over Modal styles */
-.game-over-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.2);
-    text-align: center;
-    z-index: 1000;
-    min-width: 300px;
-}
-
-.game-over-text {
-    font-size: 24px;
-    color: #333;
-    margin-bottom: 15px;
-    font-family: "Microsoft YaHei", "SimHei", Arial;
-}
-
-.game-over-score {
-    font-size: 20px;
-    color: #666;
-    margin-bottom: 20px;
-    font-family: "Microsoft YaHei", "SimHei", Arial;
-}
-
-.game-over-button {
-    padding: 10px 25px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin: 5px 10px;
-    transition: all 0.2s;
-}
-
-.game-over-button:hover {
-    background-color: #45a049;
-    transform: translateY(-2px);
-}
-
-/* Game section styles */
 .game-section {
     flex: 1;
     display: flex;
@@ -147,7 +87,7 @@ body {
     align-items: center;
     width: 100%;
     max-width: 600px;
-    padding: 10px;
+    padding: 5px;
 }
 
 .lives-container {
@@ -162,13 +102,15 @@ body {
 
 .side-section {
     width: 300px;
-    padding: 20px;
+    padding: 10px;
     background-color: #f8f9fa;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
+    height: calc(100vh - 20px);
+    overflow-y: auto;
 }
 
 #gameCanvas {
@@ -176,19 +118,20 @@ body {
     border-radius: 4px;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin: 20px 0;
+    margin: 10px 0;
+    height: auto;
 }
 
 .score {
     font-size: 24px;
-    margin: 20px 0;
+    margin: 10px 0;
     color: #333;
     font-weight: bold;
 }
 
 /* Game Controls */
 .game-controls {
-    margin: 20px 0;
+    margin: 10px 0;
     display: flex;
     gap: 10px;
     justify-content: center;
@@ -212,11 +155,11 @@ body {
 
 /* Arrow Controls */
 .arrow-controls {
-    margin-top: 20px;
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
 }
 
 .arrow-row {
@@ -251,29 +194,90 @@ body {
     transform: scale(0.95);
 }
 
+#message {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 24px;
+    margin: 20px 0;
+    color: #333;
+    text-align: center;
+    min-height: 36px;
+    font-family: "Microsoft YaHei", "SimHei", Arial;
+    z-index: 100;
+}
+
+/* Game Over Modal styles */
+.game-over-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    text-align: center;
+    z-index: 1000;
+    min-width: 300px;
+    font-family: "Microsoft YaHei", "SimHei", Arial;
+}
+
+.game-over-text {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.game-over-score {
+    font-size: 20px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.game-over-button {
+    padding: 10px 25px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 5px 10px;
+    transition: all 0.2s;
+}
+
+.game-over-button:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
 /* Leaderboard styles */
 .leaderboard {
     background-color: white;
-    padding: 15px;
+    padding: 10px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    flex-shrink: 0;
 }
 
 .leaderboard h2 {
     color: #333;
     font-size: 20px;
-    margin: 0 0 15px 0;
+    margin: 0 0 10px 0;
     text-align: center;
 }
 
 .leaderboard-table {
     width: 100%;
     border-collapse: collapse;
+    margin-bottom: 10px;
 }
 
 .leaderboard-table th,
 .leaderboard-table td {
-    padding: 8px;
+    padding: 6px;
     text-align: center;
     border-bottom: 1px solid #ddd;
 }
@@ -284,6 +288,10 @@ body {
     font-weight: bold;
 }
 
+.leaderboard-table tr:last-child td {
+    border-bottom: none;
+}
+
 .leaderboard-table tr:hover {
     background-color: #f5f5f5;
 }
@@ -291,7 +299,7 @@ body {
 #loveImage {
     width: 100%;
     border-radius: 8px;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 .hidden {
@@ -308,10 +316,62 @@ body {
     .side-section {
         width: auto;
         margin: 10px;
+        height: auto;
+        max-height: calc(100vh - 20px);
     }
 
-    .message-container {
-        width: 90%;
+    #gameCanvas {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+    }
+    
+    .arrow-btn {
+        width: 65px;
+        height: 65px;
+        font-size: 30px;
+    }
+
+    .game-controls {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .game-controls button {
+        flex: 1;
+        min-width: 90px;
+        padding: 12px 15px;
+        font-size: 16px;
+    }
+
+    .arrow-controls {
+        margin: 15px 0;
+    }
+
+    .arrow-row {
+        gap: 15px;
+    }
+
+    .game-header {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 10px 5px;
+    }
+
+    .score {
+        font-size: 20px;
+    }
+
+    .life-heart {
+        font-size: 20px;
+    }
+
+    .title {
+        font-size: 24px;
+    }
+
+    .start-button {
+        padding: 8px 20px;
         font-size: 18px;
     }
 
@@ -319,10 +379,5 @@ body {
         width: 90%;
         max-width: 350px;
         padding: 20px;
-    }
-
-    .arrow-btn {
-        width: 60px;
-        height: 60px;
     }
 }
