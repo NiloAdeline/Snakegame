@@ -1,0 +1,42 @@
+cd C:\Users\chanc\Desktop\snake
+
+
+
+# Initialize git repository
+git init
+
+# Add all your files to git
+git add .
+
+# Make your first commit
+git commit -m "Initial commit"
+
+# Add the remote repository
+git remote add origin https://github.com/NiloAdeline/Snakegame.git
+
+# Rename your branch to main
+git branch -M main
+
+# Push your code to GitHub
+git push -u origin main
+
+
+
+
+git config --global user.name "NiloAdeline"
+git config --global user.email "chanchinthai22@gmail.com"
+
+
+
+git config --global user.name "NiloAdeline"
+
+
+
+
+git status
+
+git add .
+git commit -m "Changed color in style.css"
+git push
+
+git diff
